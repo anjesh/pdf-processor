@@ -1,9 +1,9 @@
 from os import listdir
 import os.path
 import json
-from PdfInfo import *
-from PdfToText import *
-from PdfSeparate import *
+from pdftools.PdfInfo import *
+from pdftools.PdfToText import *
+from pdftools.PdfSeparate import *
 
 class PDFProcessor:
     def __init__(self, filePath, outputDir):
@@ -18,6 +18,7 @@ class PDFProcessor:
         pdfInfo = PdfInfo(self.filePath)
         self.totalPages = pdfInfo.getPages()
         self.fileSize = pdfInfo.getFileSizeInBytes()
+        self.separatePdfPages()
 
     def processToCheckStructured(self):
         """

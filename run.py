@@ -11,7 +11,6 @@ if pdfProcessor.isStructured():
     pdfProcessor.extractTextFromStructuredDoc()
 else:
     pdfProcessor.extractTextFromScannedDoc()
-pdfProcessor.separatePdfPages()
 pdfProcessor.writeStats()
 
 

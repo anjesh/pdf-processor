@@ -5,7 +5,7 @@ import sys
 import glob
 import os
 
-from PdfSeparate import *
+from pdftools.PdfSeparate import *
 
 class PdfSeparateTest(unittest.TestCase):
     def setUp(self):
