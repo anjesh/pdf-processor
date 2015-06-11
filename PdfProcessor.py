@@ -3,6 +3,7 @@ import os.path
 import json
 from PdfInfo import *
 from PdfToText import *
+from PdfSeparate import *
 
 class PDFProcessor:
     def __init__(self, filePath, outputDir):
@@ -37,6 +38,10 @@ class PDFProcessor:
         stats = {"pages": self.totalPages, "structured": self.isStructured()}
         with open(os.path.join(self.outputDir,'stats.json'),'w') as outfile:
             json.dump(stats, outfile)
+
+    def separatePdfPages(self):
+        pdfSeparate = PdfSeparate(self.filePath, os.path.join(self.outputDir,'pages'))
+        pdfSeparate.extractPages()
 
     def extractTextFromStructuredDoc(self):
         """

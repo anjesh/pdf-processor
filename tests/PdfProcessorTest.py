@@ -54,3 +54,10 @@ class PdfProcessorTest(unittest.TestCase):
         self.assertTrue(os.path.isdir(os.path.join(self.outdir,"text")))
         self.assertTrue(os.path.isfile(os.path.join(self.outdir,"text","1.txt")))
         self.assertTrue(os.path.isfile(os.path.join(self.outdir,"text","5.txt")))
+
+    def testSeparatePdfPages(self):
+        pdfProcessor = PDFProcessor('tests/sample.pdf', self.outdir)
+        pdfProcessor.separatePdfPages()
+        self.assertTrue(os.path.isdir(os.path.join(self.outdir,"pages")))
+        self.assertTrue(os.path.isfile(os.path.join(self.outdir,"pages","1.pdf")))
+        self.assertTrue(os.path.isfile(os.path.join(self.outdir,"pages","5.pdf")))
