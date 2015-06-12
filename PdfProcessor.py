@@ -14,6 +14,9 @@ class PDFProcessor:
         self.process()
         self.processToCheckStructured()
 
+    def setConfigParser(self, configParser):
+        self.configParser = configParser
+
     def process(self):
         pdfInfo = PdfInfo(self.filePath)
         self.totalPages = pdfInfo.getPages()
@@ -55,8 +58,9 @@ class PDFProcessor:
         """
         makes api calls 
         """
-        print "using ABBYY, needs implementation"
-        pass
+        abbyyPdf = AbbyyPdfTextExtractor(os.path.join(self.outputDir,'pages'), os.path.join(self.outputDir,'text'), self.totalPages, "english")
+        abbyyPdf.setApplicationCredentials(self.configParser.get('abbyy','appid'), self.configParser.get('abbyy','password'))
+        abbyyPdf.extractPages();
 
 
 

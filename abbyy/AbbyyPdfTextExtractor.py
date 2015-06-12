@@ -3,13 +3,17 @@ from AbbyyOnlineSdk import *
 class AbbyyPdfTextExtractor:
     def __init__(self, indir, outdir, pages, language):
         self.processor = AbbyyOnlineSdk()
-        self.processor.ApplicationId = "user"
-        self.processor.Password = "password"
+        self.processor.ApplicationId = ""
+        self.processor.Password = ""
         self.outputFormat = 'txt'
         self.language = language
         self.indir = indir
         self.pages = pages
         self.outdir = outdir
+
+    def setApplicationCredentials(self, appid, password):
+        self.processor.ApplicationId = appid
+        self.processor.Password = password
     
     def processPdfPage(self, page):
         """
