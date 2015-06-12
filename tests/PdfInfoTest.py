@@ -2,8 +2,8 @@
 
 import unittest
 import sys
-
-from PdfInfo import *
+import os.path
+from pdftools.PdfInfo import *
 
 class PdfInfoTest(unittest.TestCase):
     def setUp(self):

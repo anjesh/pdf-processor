@@ -5,7 +5,7 @@ import sys
 import glob
 import os
 
-from PdfToText import *
+from pdftools.PdfToText import *
 
 class PdfToTextTest(unittest.TestCase):
     def setUp(self):

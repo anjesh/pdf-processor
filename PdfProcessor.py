@@ -1,9 +1,9 @@
 from os import listdir
 import os.path
 import json
-from PdfInfo import *
-from PdfToText import *
-from PdfSeparate import *
+from pdftools.PdfInfo import *
+from pdftools.PdfToText import *
+from pdftools.PdfSeparate import *
 
 class PDFProcessor:
     def __init__(self, filePath, outputDir):
@@ -14,10 +14,14 @@ class PDFProcessor:
         self.process()
         self.processToCheckStructured()
 
+    def setConfigParser(self, configParser):
+        self.configParser = configParser
+
     def process(self):
         pdfInfo = PdfInfo(self.filePath)
         self.totalPages = pdfInfo.getPages()
         self.fileSize = pdfInfo.getFileSizeInBytes()
+        self.separatePdfPages()
 
     def processToCheckStructured(self):
         """
@@ -54,8 +58,9 @@ class PDFProcessor:
         """
         makes api calls 
         """
-        print "using ABBYY, needs implementation"
-        pass
+        abbyyPdf = AbbyyPdfTextExtractor(os.path.join(self.outputDir,'pages'), os.path.join(self.outputDir,'text'), self.totalPages, "english")
+        abbyyPdf.setApplicationCredentials(self.configParser.get('abbyy','appid'), self.configParser.get('abbyy','password'))
+        abbyyPdf.extractPages();
 
 
 

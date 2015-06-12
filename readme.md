@@ -30,12 +30,12 @@ Execute `bash runtest.sh` to run all above tests at once.
 
 ### Run
 
+* Register in ABBYY and get application-id and password, copy `settings.config.bak` to `settings.config` and update application-id and password
 * `python run.py` to see the options
 * `python run.py -i tests/sample.pdf -o out` creates folder `out/text` with the extracted text files, `out/pages` with the separated pdf files and `out/stats.json`.
 
 ### TODO
 
-* integrate Abbyy API for OCR for scanned pdfs
 * log the events
 * handle exceptions
 
