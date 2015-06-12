@@ -33,10 +33,10 @@ class PDFProcessor:
 
     def isStructured(self):
         """
-        assuming that text content should be at least 50 bytes in average in each page to say 
+        assuming that text content should be at least 500 bytes in average in each page to say 
         that the pdf is structured
         """
-        return True if self.textContentSize > (self.totalPages*50) else False
+        return True if self.textContentSize > (self.totalPages*500) else False
 
     def writeStats(self):
         stats = {"pages": self.totalPages, "structured": self.isStructured()}
