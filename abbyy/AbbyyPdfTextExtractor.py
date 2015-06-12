@@ -59,3 +59,12 @@ class AbbyyPdfTextExtractor:
     def extractPages(self):
         for page in range(1, self.pages+1):
             self.processPdfPage(page)
+            outputFileName = os.path.join(self.outdir, str(page) + ".txt")
+            with open(outputFileName, 'r') as infile:
+                content = infile.read()    
+            with open(outputFileName, 'w') as outfile:
+                outfile.write(self.nl2br(content))
+
+    def nl2br(self, s):
+        return '<br />\n'.join(s.split('\n'))
+

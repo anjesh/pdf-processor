@@ -4,6 +4,7 @@ import json
 from pdftools.PdfInfo import *
 from pdftools.PdfToText import *
 from pdftools.PdfSeparate import *
+from abbyy.AbbyyPdfTextExtractor import *
 
 class PDFProcessor:
     def __init__(self, filePath, outputDir):

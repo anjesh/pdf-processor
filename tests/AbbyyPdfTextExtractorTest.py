@@ -39,15 +39,12 @@ class AbbyyPdfTextExtractorTest(unittest.TestCase):
         self.assertTrue(os.path.isfile(os.path.join(self.outdir,"1.txt")))
 
     def testScannedPdfPages(self):
-        pdfSeparate = PdfSeparate('tests/sample-scanned.pdf', self.indir)        
+        pdfSeparate = PdfSeparate('tests/sample-scanned-1.pdf', self.indir)        
         pdfSeparate.extractPages()
         self.assertTrue(os.path.isfile(os.path.join(self.indir,"1.pdf")))
 
-        abbyyPdf = AbbyyPdfTextExtractor(self.indir, self.outdir, 5, "english")
+        abbyyPdf = AbbyyPdfTextExtractor(self.indir, self.outdir, 2, "english")
         abbyyPdf.setApplicationCredentials(self.configParser.get('abbyy','appid'), self.configParser.get('abbyy','password'))
         abbyyPdf.extractPages();
         self.assertTrue(os.path.isfile(os.path.join(self.outdir,"1.txt")))
         self.assertTrue(os.path.isfile(os.path.join(self.outdir,"2.txt")))
-        self.assertTrue(os.path.isfile(os.path.join(self.outdir,"3.txt")))
-        self.assertTrue(os.path.isfile(os.path.join(self.outdir,"4.txt")))
-        self.assertTrue(os.path.isfile(os.path.join(self.outdir,"5.txt")))

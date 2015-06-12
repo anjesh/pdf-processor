@@ -5,6 +5,7 @@ import sys
 import os.path
 import os
 import glob
+import ConfigParser
 
 from PdfProcessor import *
 
@@ -22,6 +23,9 @@ class PdfProcessorTest(unittest.TestCase):
             for f in files:
                 if os.path.isfile(f):
                     os.remove(f)
+        self.configParser = ConfigParser.RawConfigParser()
+        self.configParser.read('settings.config')
+
 
     def testStructuredPdf(self):
         pdfProcessor = PDFProcessor('tests/sample.pdf', self.outdir)
@@ -61,3 +65,12 @@ class PdfProcessorTest(unittest.TestCase):
         self.assertTrue(os.path.isdir(os.path.join(self.outdir,"pages")))
         self.assertTrue(os.path.isfile(os.path.join(self.outdir,"pages","1.pdf")))
         self.assertTrue(os.path.isfile(os.path.join(self.outdir,"pages","5.pdf")))
+
+    def testScannedPdfExtractPages(self):
+        pdfProcessor = PDFProcessor('tests/sample-scanned-1.pdf', self.outdir)
+        pdfProcessor.setConfigParser(self.configParser)        
+        self.assertFalse(pdfProcessor.isStructured())
+        pdfProcessor.extractTextFromScannedDoc()
+        self.assertTrue(os.path.isdir(os.path.join(self.outdir,"text")))
+        self.assertTrue(os.path.isfile(os.path.join(self.outdir,"text","1.txt")))
+        self.assertTrue(os.path.isfile(os.path.join(self.outdir,"text","2.txt")))
