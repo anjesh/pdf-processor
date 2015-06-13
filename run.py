@@ -16,7 +16,7 @@ logger.info("outdir: %s", results.outdir)
 
 
 configParser = ConfigParser.RawConfigParser()
-configParser.read('settings.config')
+configParser.read(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.config'))
 
 pdfProcessor = PDFProcessor(results.infile, results.outdir)
 pdfProcessor.setConfigParser(configParser)
