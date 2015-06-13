@@ -26,6 +26,11 @@ class AbbyyPdfTextExtractor:
         """
         infile = os.path.join(self.indir, "%d.pdf" % page)
         outfile = os.path.join(self.outdir, "%d.txt" % page)
+        with open(outfile, 'w') as of:
+            of.write('test content for permission testing')
+            self.logger.info('writing to %s', outfile) 
+            return
+
         settings = ProcessingSettings()
         settings.Language = self.language
         settings.OutputFormat = self.outputFormat
