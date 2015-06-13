@@ -1,6 +1,9 @@
 from AbbyyOnlineSdk import *
+import ProcessLogger
 
 class AbbyyPdfTextExtractor:
+    logger = ProcessLogger.getLogger('Abbyy')
+
     def __init__(self, indir, outdir, pages, language):
         self.processor = AbbyyOnlineSdk()
         self.processor.ApplicationId = ""
@@ -10,6 +13,8 @@ class AbbyyPdfTextExtractor:
         self.indir = indir
         self.pages = pages
         self.outdir = outdir
+        if not os.path.exists(self.outdir):
+            os.makedirs(self.outdir)        
 
     def setApplicationCredentials(self, appid, password):
         self.processor.ApplicationId = appid
@@ -24,13 +29,12 @@ class AbbyyPdfTextExtractor:
         settings = ProcessingSettings()
         settings.Language = self.language
         settings.OutputFormat = self.outputFormat
-
+        self.logger.info('Processing %s', infile) 
         task = self.processor.ProcessImage(infile, settings)
         if task == None:
-            print "Error"
+            self.logger.error('Error in getting task')
             return
-        print "Id = %s" % task.Id
-        print "Status = %s" % task.Status
+        self.logger.info('Task Id: %s, status %s', task.Id, task.Status)            
 
         # Wait for the task to be completed
         sys.stdout.write( "Waiting.." )
@@ -47,14 +51,14 @@ class AbbyyPdfTextExtractor:
             sys.stdout.write( "." )
             task = self.processor.GetTaskStatus(task)
 
-        print "Status = %s" % task.Status
+        self.logger.info('Task Status: %s', task.Status)
         
         if task.Status == "Completed":
             if task.DownloadUrl != None:
                 self.processor.DownloadResult(task, outfile)
-                print "Result was written to %s" % outfile
+                self.logger.info('Result written to %s', outfile)
         else:
-            print "Error processing task"
+            self.logger.error('Error processing task')
 
     def extractPages(self):
         for page in range(1, self.pages+1):
