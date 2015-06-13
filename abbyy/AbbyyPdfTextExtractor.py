@@ -58,6 +58,8 @@ class AbbyyPdfTextExtractor:
                 self.processor.DownloadResult(task, outfile)
                 self.logger.info('Result written to %s', outfile)
         else:
+            with open(outfile, 'w') as op:
+                op.write("Error in processing: %s" % task.Status)            
             self.logger.error('Error processing task')
 
     def extractPages(self):
