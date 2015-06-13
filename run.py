@@ -18,7 +18,7 @@ try:
 
 
     configParser = ConfigParser.RawConfigParser()
-    configParser.read(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.confi'))
+    configParser.read(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.config'))
 
     pdfProcessor = PDFProcessor(results.infile, results.outdir)
     pdfProcessor.setConfigParser(configParser)
