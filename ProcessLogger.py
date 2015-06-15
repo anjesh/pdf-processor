@@ -21,7 +21,7 @@ def getLogger(loggername, filename = 'processing.log'):
   consolehandler = logging.StreamHandler()
   consolehandler.setLevel(logging.INFO)
 
-  formatter = logging.Formatter('%(name)s %(levelname)s - %(message)s')
+  formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s - %(message)s')
   handler.setFormatter(formatter)
   consolehandler.setFormatter(formatter)
 
