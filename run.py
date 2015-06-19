@@ -4,12 +4,14 @@ from datetime import datetime
 import ConfigParser
 import ProcessLogger
 import traceback
+from urllib2 import HTTPError, URLError
 
 parser = argparse.ArgumentParser(description='Processes the pdf and extracts the text')
 parser.add_argument('-i','--infile', help='File path of the input pdf file.', required=True)
 parser.add_argument('-o','--outdir', help='File name of the output csv file.', required=True)
 results = parser.parse_args()
 
+pdfProcessor = ""
 try:
     logger = ProcessLogger.getLogger('run')
     logger.info("Processing started at %s ", str(datetime.now()))
@@ -27,10 +29,17 @@ try:
     else:
         pdfProcessor.extractTextFromScannedDoc()
     pdfProcessor.writeStats()
+except URLError as e:
+    logger.error("URLError: %s", e.reason);
+    logger.debug(traceback.format_exception(*sys.exc_info()))
+except HTTPError as e:
+    logger.error("HTTPError: [%s] %s", e.code, e.reason);
+    logger.debug(traceback.format_exception(*sys.exc_info()))
 except OSError as e:
     logger.error("OSError: %s [%s] in %s", e.strerror, e.errno, e.filename);
     logger.debug(traceback.format_exception(*sys.exc_info()))
 except Exception as e:
     logger.error("Exception: %s ", e);
     logger.debug(traceback.format_exception(*sys.exc_info()))
-logger.info("Processing ended at %s ", str(datetime.now()));
+finally:
+    logger.info("Processing ended at %s ", str(datetime.now()));

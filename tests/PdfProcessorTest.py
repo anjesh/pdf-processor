@@ -40,15 +40,25 @@ class PdfProcessorTest(unittest.TestCase):
         pdfProcessor.writeStats()
         with open(os.path.join(self.outdir,"stats.json")) as json_file:
             json_data = json.load(json_file)
-            self.assertFalse(json_data['structured'])            
-            self.assertEqual(json_data['pages'], 5)            
+            self.assertEqual(json_data['status'], "Scanned")            
+            self.assertEqual(json_data['pages'], 2)            
+
+    def testEncryptedScannedPdfStats(self):
+        try:
+            pdfProcessor = PDFProcessor('tests/sample-scanned-encrypted.pdf', self.outdir)
+        except Exception as e:
+            self.assertEqual("Pdf is encrypted. Can't do processing.", str(e))
+        with open(os.path.join(self.outdir,"stats.json")) as json_file:
+            json_data = json.load(json_file)
+            self.assertEqual(json_data['status'], "Encrypted")
+            self.assertEqual(json_data['pages'], 69)            
 
     def testStructuredPdfStats(self):
         pdfProcessor = PDFProcessor('tests/sample.pdf', self.outdir)
         pdfProcessor.writeStats()
         with open(os.path.join(self.outdir,"stats.json")) as json_file:
             json_data = json.load(json_file)
-            self.assertTrue(json_data['structured'])            
+            self.assertEqual(json_data['status'], "Structured")            
             self.assertEqual(json_data['pages'], 5)            
 
     def testStructuredPdfExtractPages(self):
@@ -67,10 +77,12 @@ class PdfProcessorTest(unittest.TestCase):
         self.assertTrue(os.path.isfile(os.path.join(self.outdir,"pages","5.pdf")))
 
     def testScannedPdfExtractPages(self):
-        pdfProcessor = PDFProcessor('tests/sample-scanned-1.pdf', self.outdir)
-        pdfProcessor.setConfigParser(self.configParser)        
-        self.assertFalse(pdfProcessor.isStructured())
-        pdfProcessor.extractTextFromScannedDoc()
-        self.assertTrue(os.path.isdir(os.path.join(self.outdir,"text")))
-        self.assertTrue(os.path.isfile(os.path.join(self.outdir,"text","1.txt")))
-        self.assertTrue(os.path.isfile(os.path.join(self.outdir,"text","2.txt")))
+        try:
+            pdfProcessor = PDFProcessor('tests/sample-scanned-1.pdf', self.outdir)
+            pdfProcessor.setConfigParser(self.configParser)        
+            self.assertFalse(pdfProcessor.isStructured())
+            pdfProcessor.extractTextFromScannedDoc()
+            self.assertTrue(os.path.isdir(os.path.join(self.outdir,"text")))
+            self.assertTrue(os.path.isfile(os.path.join(self.outdir,"text","1.txt")))
+        except Exception:
+            pass

@@ -13,6 +13,7 @@ class PDFProcessor:
     def __init__(self, filePath, outputDir):
         self.filePath = filePath
         self.outputDir = outputDir
+        self.isEncrypted = False
         self.textContentSize = 0
         self.totalPages = 0
         self.process()
@@ -28,6 +29,10 @@ class PDFProcessor:
         self.totalPages = pdfInfo.getPages()
         self.fileSize = pdfInfo.getFileSizeInBytes()
         self.logger.info('Total Pages: %d, File Size: %d bytes', self.totalPages, self.fileSize)
+        self.isEncrypted = pdfInfo.isEncrypted()
+        if self.isEncrypted:
+            self.writeStats()
+            raise Exception('Pdf is encrypted. Can\'t do processing.')
         self.separatePdfPages()
 
     def processToCheckStructured(self):
@@ -47,8 +52,14 @@ class PDFProcessor:
         """
         return True if self.textContentSize > (self.totalPages*500) else False
 
+    def getStatus(self):
+        if self.isEncrypted:
+            return "Encrypted"
+        else:
+            return "Structured" if self.isStructured() else "Scanned";
+
     def writeStats(self):
-        stats = {"pages": self.totalPages, "structured": self.isStructured()}
+        stats = {"pages": self.totalPages, "status": self.getStatus()}
         with open(os.path.join(self.outputDir,'stats.json'),'w') as outfile:
             json.dump(stats, outfile)
             self.logger.info('Writing %s to %s', json.dumps(stats), 'stats.json')

@@ -21,6 +21,9 @@ class PdfInfo:
                 if label in line:
                     self.info[label] = self.extract(line)
     
+    def isEncrypted(self):
+        return False if (self.info['Encrypted'][:2]=="no") else True
+
     def extract(self, row):
         return row.split(':', 1)[1].strip()
 

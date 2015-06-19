@@ -11,18 +11,17 @@ Make sure that `pdftotext`, `pdfinfo` and `pdfseparate` are installed in your co
 ### How it works
 
 * Reads the pdf file
-* Uses `pdfinfo` to get the total pages in the pdf and size
-* Uses `pdftotext` to dump the text and compares the size of the extract text content. If the text content size is 500 bytes in average for each page, then it is structured otherwise scanned one.
-* If the pdf is structured, then it uses `pdftotext` to extract the text content page-wise and puts the txt files in the `text` folder.
-* If the pdf is non-structured i.e. scanned, then it uses Abbyy OCR service to extract the text content `TODO`
-* Creates `stats.json` file with the following content (structured = false if scanned)
-
+* Uses `pdfinfo` to get the total pages in the pdf and size and whether it's encrypted
+* If encrypted i.e. "password protected", then it writes `stats.json` with `{ "status":"Encryption", .. }` throws an Exception, and exits from the script.
+* If not encrypted
+  * Uses `pdftotext` to dump the text and compares the size of the extract text content. If the text content size is 500 bytes in average for each page, then it is structured otherwise scanned one.
+  * Uses `pdfseparate` to extract each pdf page and saves in the `pages` folder.
+  * If the pdf is structured, then it uses `pdftotext` to extract the text content page-wise and puts the txt files in the `text` folder.
+  * If the pdf is non-structured i.e. scanned, then it uses Abbyy OCR service to extract the text content `TODO`
+  * Creates `stats.json` file with the following content (status = [Scanned|Structured|Encrypted])
 ```json
-{ "structured": true, "pages": 5 }
+{ "status": "Structured", "pages": 5 }
 ```
-
-* Uses `pdfseparate` to extract each pdf page and saves in the `pages` folder.
-
 
 ### Test
 
@@ -36,8 +35,7 @@ Execute `bash runtest.sh` to run all above tests at once.
 
 ### TODO
 
-* log the events
-* handle exceptions
+* handle more exceptions
 
 
 
