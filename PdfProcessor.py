@@ -3,6 +3,7 @@ import os.path
 import json
 from pdftools.PdfInfo import *
 from pdftools.PdfToText import *
+from pdftools.PdfTkSeparate import *
 from pdftools.PdfSeparate import *
 from abbyy.AbbyyPdfTextExtractor import *
 import ProcessLogger
@@ -65,8 +66,8 @@ class PDFProcessor:
             self.logger.info('Writing %s to %s', json.dumps(stats), 'stats.json')
 
     def separatePdfPages(self):
-        self.logger.info('Calling Pdfseparate: Separating pdf to pages at %s', os.path.join(self.outputDir,'pages'))
-        pdfSeparate = PdfSeparate(self.filePath, os.path.join(self.outputDir,'pages'))
+        self.logger.info('Calling PdfTkseparate: Separating pdf to pages at %s', os.path.join(self.outputDir,'pages'))
+        pdfSeparate = PdfTkSeparate(self.filePath, os.path.join(self.outputDir,'pages'))
         pdfSeparate.extractPages()
 
     def extractTextFromStructuredDoc(self):
