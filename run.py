@@ -24,11 +24,11 @@ try:
 
     pdfProcessor = PDFProcessor(results.infile, results.outdir)
     pdfProcessor.setConfigParser(configParser)
+    pdfProcessor.writeStats()
     if pdfProcessor.isStructured():
         pdfProcessor.extractTextFromStructuredDoc()
     else:
         pdfProcessor.extractTextFromScannedDoc()
-    pdfProcessor.writeStats()
 except URLError as e:
     logger.error("URLError: %s", e.reason);
     logger.debug(traceback.format_exception(*sys.exc_info()))
