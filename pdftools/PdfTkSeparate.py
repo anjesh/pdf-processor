@@ -1,5 +1,6 @@
 import subprocess
 import os.path
+import sys
 
 
 class PdfTkSeparate:
@@ -15,3 +16,4 @@ class PdfTkSeparate:
 
     def extractPages(self):
         cmdOutput = subprocess.call([self.cmd, self.infilepath, 'burst', 'output', os.path.join(self.outdir, "%d.pdf")])
+        return cmdOutput
