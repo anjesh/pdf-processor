@@ -67,8 +67,13 @@ class PDFProcessor:
 
     def separatePdfPages(self):
         self.logger.info('Calling PdfTkseparate: Separating pdf to pages at %s', os.path.join(self.outputDir,'pages'))
-        pdfSeparate = PdfTkSeparate(self.filePath, os.path.join(self.outputDir,'pages'))
-        pdfSeparate.extractPages()
+        pdfTkSeparate = PdfTkSeparate(self.filePath, os.path.join(self.outputDir,'pages'))
+        pdfTkProcessStatus = pdfTkSeparate.extractPages()
+        self.logger.info('PdfTkseparate Status: %s', pdfTkProcessStatus)
+        if pdfTkProcessStatus != 0:
+            self.logger.info('Calling Pdfseparate: Separating pdf to pages at %s', os.path.join(self.outputDir,'pages'))
+            pdfSeparate = PdfSeparate(self.filePath, os.path.join(self.outputDir,'pages'))
+            pdfSeparate.extractPages()
 
     def extractTextFromStructuredDoc(self):
         """
