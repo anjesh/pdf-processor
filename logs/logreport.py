@@ -14,7 +14,10 @@ class PdfProcessingStatus:
         print "PDF Type, Total Pages, Duration"
         for l, line in enumerate(self.lines):
             line = self.lines[l]
-            print line.pdfType, ",", line.totalPages, ",", line.endTime - line.startTime
+            try:
+                print line.pdfType, ",", line.totalPages, ",", line.endTime - line.startTime
+            except:
+                print "Error in the line ", line.pdfType, ",", line.totalPages, ",", line.endTime, line.startTime
 
 class LogLine:
     def __init__(self):
