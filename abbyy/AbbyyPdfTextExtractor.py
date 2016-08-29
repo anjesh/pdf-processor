@@ -37,7 +37,7 @@ class AbbyyPdfTextExtractor:
         self.logger.info('Task Id: %s, status %s', task.Id, task.Status)            
 
         # Wait for the task to be completed
-        sys.stdout.write( "Waiting.." )
+        # sys.stdout.write( "Waiting.." )
         # Note: it's recommended that your application waits at least 2 seconds
         # before making the first getTaskStatus request and also between such requests
         # for the same task. Making requests more often will not improve your

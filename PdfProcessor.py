@@ -11,9 +11,10 @@ import ProcessLogger
 class PDFProcessor:
     logger = ProcessLogger.getLogger('PDFProcessor')
     
-    def __init__(self, filePath, outputDir):
+    def __init__(self, filePath, outputDir, language):
         self.filePath = filePath
         self.outputDir = outputDir
+        self.language = language
         self.isEncrypted = False
         self.textContentSize = 0
         self.totalPages = 0
@@ -88,7 +89,7 @@ class PDFProcessor:
         makes api calls 
         """
         self.logger.info('Calling Abbyy: OCR-ing %d pages at %s', self.totalPages, os.path.join(self.outputDir,'text'))
-        abbyyPdf = AbbyyPdfTextExtractor(os.path.join(self.outputDir,'pages'), os.path.join(self.outputDir,'text'), self.totalPages, "english")
+        abbyyPdf = AbbyyPdfTextExtractor(os.path.join(self.outputDir,'pages'), os.path.join(self.outputDir,'text'), self.totalPages, self.language)
         abbyyPdf.setApplicationCredentials(self.configParser.get('abbyy','appid'), self.configParser.get('abbyy','password'))
         abbyyPdf.extractPages();
 
