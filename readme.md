@@ -35,7 +35,7 @@ Execute `bash runtest.sh` to run all above tests at once.
 
 * Register in ABBYY and get application-id and password, copy `settings.config.bak` to `settings.config` and update application-id and password
 * `python run.py` to see the options
-* `python run.py -i tests/sample.pdf -o out` creates folder `out/text` with the extracted text files, `out/pages` with the separated pdf files and `out/stats.json`.
+* `python run.py -i tests/sample.pdf -o out -l french` creates folder `out/text` with the extracted text files, `out/pages` with the separated pdf files and `out/stats.json`. In case of french contract, it OCRs the document in that language. For now only english, french and spanish are supported. Language is optional field and uses english by default.
 
 ### TODO
 
