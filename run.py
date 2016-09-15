@@ -11,7 +11,7 @@ parser.add_argument('-l','--language', help='Language of input pdf file for tran
 parser.add_argument('-i','--infile', help='File path of the input pdf file.', required=True)
 parser.add_argument('-o','--outdir', help='File name of the output csv file.', required=True)
 results = parser.parse_args()
-allowed_languages = ["english", "french", "spanish"]
+allowed_languages = ["english", "french", "spanish", "portuguese", "arabic"]
 pdfProcessor = ""
 try:
     logger = ProcessLogger.getLogger('run')
@@ -19,7 +19,9 @@ try:
     logger.info("input: %s", results.infile)
     logger.info("outdir: %s", results.outdir)  
     if results.language.lower() not in allowed_languages:
-        raise Exception("language should be one of english, spanish, or spanish")
+        raise Exception("language should be one of english, french, spanish, portuguese or arabic")
+    if results.language.lower() == "portuguese":
+        results.language = "portuguesestandard"
 
     configParser = ConfigParser.RawConfigParser()
     configParser.read(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.config'))
